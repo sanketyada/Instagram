@@ -31,6 +31,10 @@ app.use(passport.session())
 passport.serializeUser(userModel.serializeUser())
 passport.deserializeUser(userModel.deserializeUser())
 
+app.use((req, res, next) => {
+  res.locals.user = req.session.user || null;
+  next();
+});
 
 
 app.use(logger('dev'));

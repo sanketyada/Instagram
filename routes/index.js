@@ -124,15 +124,17 @@ router.get("/profile", isLoggedIn, async function (req, res) {
 router.get("/feed", isLoggedIn, async function (req, res) {
   const posts = await postModel.find().populate("user");
   // console.log(posts)
-
-  res.render("feed", { footer: true, posts });
+  const user = await userModel.findOne({ username: req.session.passport.user });
+  const alluser = await userModel.find()
+  res.render("feed", { footer: true, posts,user,alluser });
 });
 
 //like
 router.get("/like/:id", isLoggedIn, async (req, res) => {
 
-  console.log(req.params.id);
-  const post = await postModel.findOne({ _id: req.params.id }).populate("likes")
+  // console.log(req.params.id);
+
+  const post = await postModel.findOne({ _id: req.params.id });
   const user = await userModel.findOne({ username: req.session.passport.user });
  
 
@@ -141,12 +143,13 @@ router.get("/like/:id", isLoggedIn, async (req, res) => {
 
    post.likes.push(user._id);
 
-  }else{
+  }
+  else{
     post.likes.splice(post.likes.indexOf(user._id),1)
   }
 
 
-  post.save();
+  await post.save();
   res.redirect("/feed");
 
 

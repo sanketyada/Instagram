@@ -8,6 +8,8 @@
       </div>
     </div>
     <div class="story px-3 flex gap-3 overflow-auto mt-5">
+
+      <%alluser.forEach((item)=>{%>
       <div class="circle flex-shrink-0">
         <div
           class="gradient w-[18vw] h-[18vw] bg-sky-100 rounded-full bg-gradient-to-r from-purple-700 to-orange-500 flex items-center justify-center">
@@ -18,89 +20,63 @@
           </div>
         </div>
       </div>
-      <div class="circle flex-shrink-0">
-        <div
-          class="gradient w-[18vw] h-[18vw] bg-sky-100 rounded-full bg-gradient-to-r from-purple-700 to-orange-500 flex items-center justify-center">
-          <div class="inner w-[92%] h-[92%] rounded-full overflow-hidden">
-            <img class="w-full h-full object-cover"
-              src="https://images.unsplash.com/photo-1570158268183-d296b2892211?q=80&w=3456&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              alt="">
-          </div>
-        </div>
-      </div>
-      <div class="circle flex-shrink-0">
-        <div
-          class="gradient w-[18vw] h-[18vw] bg-sky-100 rounded-full bg-gradient-to-r from-purple-700 to-orange-500 flex items-center justify-center">
-          <div class="inner w-[92%] h-[92%] rounded-full overflow-hidden">
-            <img class="w-full h-full object-cover"
-              src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?q=80&w=2550&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              alt="">
-          </div>
-        </div>
-      </div>
-      <div class="circle flex-shrink-0">
-        <div
-          class="gradient w-[18vw] h-[18vw] bg-sky-100 rounded-full bg-gradient-to-r from-purple-700 to-orange-500 flex items-center justify-center">
-          <div class="inner w-[92%] h-[92%] rounded-full overflow-hidden">
-            <img class="w-full h-full object-cover"
-              src="https://images.unsplash.com/photo-1570158268183-d296b2892211?q=80&w=3456&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              alt="">
-          </div>
-        </div>
-      </div>
-      <div class="circle flex-shrink-0">
-        <div
-          class="gradient w-[18vw] h-[18vw] bg-sky-100 rounded-full bg-gradient-to-r from-purple-700 to-orange-500 flex items-center justify-center">
-          <div class="inner w-[92%] h-[92%] rounded-full overflow-hidden">
-            <img class="w-full h-full object-cover"
-              src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?q=80&w=2550&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              alt="">
-          </div>
-        </div>
-      </div>
-      <div class="circle flex-shrink-0">
-        <div
-          class="gradient w-[18vw] h-[18vw] bg-sky-100 rounded-full bg-gradient-to-r from-purple-700 to-orange-500 flex items-center justify-center">
-          <div class="inner w-[92%] h-[92%] rounded-full overflow-hidden">
-            <img class="w-full h-full object-cover"
-              src="https://images.unsplash.com/photo-1570158268183-d296b2892211?q=80&w=3456&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              alt="">
-          </div>
-        </div>
-      </div>
+
+
+
+      <%})%>
+
+
+
+
     </div>
     <div class="posts mb-20">
 
-<%posts.reverse().forEach((item)=>{%>
+      <%posts.reverse().forEach((item)=>{%>
 
-          <div class="post mt-10 w-full min-h-[50vh]">
-            <div class="title px-4 flex items-center gap-2">
-              <div class="w-[8vw] h-[8vw] bg-sky-100 rounded-full overflow-hidden">
-                <img class="w-full h-full  object-cover" src="/images/uploads/<%=item.user.profileImg%>" alt="">
-               
-              </div>
-              <h4 class="text-sm"><%=item.user.username%></h4>
-              <h6 class="text-xs opacity-30">1d</h6>
+        <div class="post mt-10 w-full min-h-[50vh]">
+          <div class="title px-4 flex items-center gap-2">
+            <div class="w-[8vw] h-[8vw] bg-sky-100 rounded-full overflow-hidden">
+              <img class="w-full h-full  object-cover" src="/images/uploads/<%=item.user.profileImg%>" alt="">
+
             </div>
-            <div class="w-full h-96 mt-4 bg-sky-100 overflow-hidden">
-              <img class="w-full h-full object-cover" src="/images/uploads/<%=item.postimage%>" alt="">
-            </div>
-            <div class="options w-full px-4 flex justify-between items-center text-[1.4rem]">
-              <div class="flex gap-3 mt-2">
-               <a href=/like/<%=item._id%>> 
-                <i class="ri-heart-3-line"></i> 
-              </a> 
-                <i class="ri-chat-3-line"></i>
-                <i class="ri-share-circle-line"></i>
-              </div>
-              <i class="ri-bookmark-line"></i>
-            </div>
-            <h3 class="px-4 mt-2 text-sm leading-none tracking-tight"><%=item.likes.length%></h3>
-            <h2 class="text-white font-light text-sm mt-2"><span class="font-semibold pl-4 pr-2"><%=item.user.username%></span>
-              <%=item.postCaption%></h2>
+            <h4 class="text-sm">
+              <%=item.user.username%>
+            </h4>
+            <h6 class="text-xs opacity-30">1d</h6>
           </div>
+          <div class="w-full h-96 mt-4 bg-sky-100 overflow-hidden">
+            <img class="w-full h-full object-cover" src="/images/uploads/<%=item.postimage%>" alt="">
+          </div>
+          <div class="options w-full px-4 flex justify-between items-center text-[1.4rem]">
+            <div class="flex gap-3 mt-2">
+              <a href=/like/<%=item._id%>>
 
-<%})%>
+                <%if(item.likes.includes(user._id)){%>
+                  <i class="ri-heart-3-fill" style="color: red;"></i>
+                  <%}else{%>
+                    <i class="ri-heart-3-line"></i>
+
+                    <%}%>
+
+              </a>
+
+
+              <i class="ri-chat-3-line"></i>
+              <i class="ri-share-circle-line"></i>
+            </div>
+            <i class="ri-bookmark-line"></i>
+          </div>
+          <h3 class="px-4 mt-2 text-sm leading-none tracking-tight">
+            <%=item.likes.length%>
+          </h3>
+          <h2 class="text-white font-light text-sm mt-2"><span class="font-semibold pl-4 pr-2">
+              <%=item.user.username%>
+            </span>
+            <%=item.postCaption%>
+          </h2>
+        </div>
+
+        <%})%>
 
 
 
