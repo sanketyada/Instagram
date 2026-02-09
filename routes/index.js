@@ -1,7 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const userModel = require("../models/user.model");
-const postModel  = require("../models/post.model")
+const postModel = require("../models/post.model");
 const upload = require("../config/multer");
 const LocalStratagy = require("passport-local");
 const passport = require("passport");
@@ -64,6 +64,13 @@ function isLoggedIn(req, res, next) {
   res.redirect("/login");
 }
 
+//render Edit page
+router.get("/edit", isLoggedIn, async function (req, res) {
+  const user = await userModel.findOne({ username: req.session.passport.user });
+
+  res.render("edit", { footer: true, user });
+});
+
 //took request from edit page
 router.post("/update", isLoggedIn, upload.single("dp"), async (req, res) => {
   // console.log(req.file)
@@ -87,61 +94,77 @@ router.post("/update", isLoggedIn, upload.single("dp"), async (req, res) => {
   res.redirect("/profile");
 });
 
-
 //took request from upload page
-router.post("/upload",upload.single("image"),async(req,res)=>{
+router.post("/upload", upload.single("image"), async (req, res) => {
   // console.log(req.file.filename)
   // console.log(req.body.caption)
- const user = await userModel.findOne({username:req.session.passport.user})
+  const user = await userModel.findOne({ username: req.session.passport.user });
   const newPost = await postModel.create({
-        postCaption:req.body.caption,
-        postimage:req.file.filename,
-        user:user._id
-  })
-  user.posts.push(newPost._id)
-  user.save()
-  res.redirect("/profile")
-
-})
-
+    postCaption: req.body.caption,
+    postimage: req.file.filename,
+    user: user._id,
+  });
+  user.posts.push(newPost._id);
+  user.save();
+  res.redirect("/profile");
+});
 
 //profile of people
 router.get("/profile", isLoggedIn, async function (req, res) {
   // console.log(req.session)
-  const user = await userModel.findOne({ username: req.session.passport.user }).populate("posts")
+  const user = await userModel
+    .findOne({ username: req.session.passport.user })
+    .populate("posts");
   // const post = await postModel.find()
   // console.log(post)
-  res.render("profile", { footer: true, user});
+  res.render("profile", { footer: true, user });
 });
+
 //feed of people
 router.get("/feed", isLoggedIn, async function (req, res) {
-  
-  const posts = await postModel.find().populate("user")
-// console.log(posts)
+  const posts = await postModel.find().populate("user");
+  // console.log(posts)
 
-  res.render("feed", { footer: true,posts })
+  res.render("feed", { footer: true, posts });
 });
 
-//like 
-router.get("/like/:id",isLoggedIn,async(req,res)=>{
-  console.log(req.params.id)
-  const post = await postModel.findOne({_id:req.params.id})
-  const user = await userModel.find({username:req.session.passport.user})
+//like
+router.get("/like/:id", isLoggedIn, async (req, res) => {
 
-  post.likes.push(user._id)
-  post.save()
-  res.redirect("/feed")
-})
+  console.log(req.params.id);
+  const post = await postModel.findOne({ _id: req.params.id }).populate("likes")
+  const user = await userModel.findOne({ username: req.session.passport.user });
+ 
 
+
+  if(post.likes.indexOf(user._id) === -1){
+
+   post.likes.push(user._id);
+
+  }else{
+    post.likes.splice(post.likes.indexOf(user._id),1)
+  }
+
+
+  post.save();
+  res.redirect("/feed");
+
+
+});
+
+//Open Search Page
 router.get("/search", isLoggedIn, function (req, res) {
   res.render("search", { footer: true });
 });
 
-router.get("/edit", isLoggedIn, async function (req, res) {
-  const user = await userModel.findOne({ username: req.session.passport.user });
+router.get("/username/:username",async(req,res)=>{
+  const regex = new RegExp(`^${req.params.username}`,`i`)
 
-  res.render("edit", { footer: true, user });
-});
+  const userfind = await userModel.find({username:regex})
+  res.json(userfind)
+
+
+})
 
 router.get("/upload", isLoggedIn, function (req, res) {
   res.render("upload", { footer: true });
