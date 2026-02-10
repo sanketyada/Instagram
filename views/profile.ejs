@@ -1,61 +1,78 @@
 <% include ./partials/header.ejs %>
-  <div class="w-full min-h-screen bg-zinc-900 text-white py-5">
-    <div class="nav flex justify-between items-center px-4">
-      <h3 class="text-lg">
-        <%=user.username%>
-      </h3>
-      <div class="icons flex gap-5">
-        <a href="/upload"><i class="text-[1.4rem] ri-add-box-line"></i></a>
-        <i class="text-[1.4rem] ri-menu-line"></i>
+
+  <div class="w-full min-h-screen bg-black text-white pb-24">
+
+    <!-- Top Nav -->
+    <div class="sticky top-0 z-50 bg-black border-b border-zinc-800">
+      <div class="flex justify-between items-center px-4 py-3">
+        <h3 class="text-lg font-semibold">
+          <%=user.username%>
+        </h3>
+        <div class="flex gap-6 text-2xl">
+          <a href="/upload">
+            <i class="ri-add-box-line cursor-pointer"></i>
+          </a>
+
+          <a href="/logout">
+             <i class="ri-menu-line cursor-pointer"></i>
+            </a>
+
+        </div>
       </div>
     </div>
-    <div class="flex justify-between items-center pl-6 pr-[12vw] mt-8">
+
+    <!-- Profile Info -->
+    <div class="flex items-center justify-between px-6 mt-6">
       <div class="w-[19vw] h-[19vw] bg-sky-100 rounded-full overflow-hidden">
-        <img class="w-full h-full object-cover" src="images/uploads/<%=user.profileImg%>" alt="">
+        <img class="w-full h-full object-cover" src="<%=user.profileImg%>" alt="">
       </div>
-      <div class="stats flex gap-5 items-center justify-between">
-        <div class="flex flex-col items-center justify-center">
-          <h3><%=user.posts.length%></h3>
-          <h4>Posts</h4>
+
+      <div class="flex gap-6 text-center">
+        <div>
+          <h3 class="font-semibold">
+            <%=user.posts.length%>
+          </h3>
+          <p class="text-xs opacity-60">Posts</p>
         </div>
-        <div class="flex flex-col items-center justify-center">
-          <h3>322</h3>
-          <h4>Followers</h4>
+        <div>
+          <h3 class="font-semibold">322</h3>
+          <p class="text-xs opacity-60">Followers</p>
         </div>
-        <div class="flex flex-col items-center justify-center">
-          <h3>322</h3>
-          <h4>Following</h4>
+        <div>
+          <h3 class="font-semibold">322</h3>
+          <p class="text-xs opacity-60">Following</p>
         </div>
       </div>
     </div>
-    <div class="dets px-6 mt-5">
-      <h3 class="text-lg mb-1">
+
+    <!-- Bio -->
+    <div class="px-6 mt-4">
+      <h3 class="text-sm font-semibold">
         <%=user.name%>
       </h3>
-      <p class="text-xs tracking-tight opacity-50">
+      <p class="text-xs opacity-60 leading-tight mt-1">
         <%=user.bio%>
       </p>
     </div>
-    <div class="px-6 mt-5">
-      <a class="px-3 py-2 bg-zinc-800 text-xs rounded-md" href="/edit">Edit Profile</a>
-    </div>
-<div class="posts w-full grid grid-cols-3 gap-2 py-2 mt-5">
-  <% user.posts.forEach((item) => { %>
 
-    <div class="bg-sky-100 rounded overflow-hidden">
-      <img
-        src="/images/uploads/<%= item.postimage %>"
-        class="w-full h-32 object-cover"
-        alt=""
-      />
-
-      <span class="block text-red-800 text-sm p-1 truncate">
-        <%= item.postCaption %>
-      </span>
+    <!-- Edit Profile -->
+    <div class="px-6 mt-4">
+      <a href="/edit" class="block text-center text-sm py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 transition">
+        Edit Profile
+      </a>
     </div>
 
-  <% }) %>
-</div>
+    <!-- Posts Grid -->
+    <div class="grid grid-cols-3 gap-[2px] mt-6">
+      <% user.posts.forEach((item)=> { %>
+
+        <div class="aspect-square bg-zinc-900 overflow-hidden">
+          <img src="<%= item.postimage %>" class="w-full h-full object-cover hover:opacity-90 transition" alt="" />
+        </div>
+
+        <% }) %>
+    </div>
 
   </div>
+
   <% include ./partials/footer.ejs %>

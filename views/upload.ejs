@@ -1,27 +1,65 @@
 <% include ./partials/header.ejs %>
-  <div class="w-full min-h-screen bg-zinc-900 text-white py-5">
-    <div class="flex justify-between items-center px-4">
-      <a class="text-sm text-blue-500" href="/profile"><i class="ri-arrow-left-s-line"></i> profile</a>
-      <h2 class="leading-none text-sm">Upload Post</h2>
-      <a class="text-sm" href="/feed"><i class="ri-home-line"></i> home</a>
+
+<div class="w-full min-h-screen bg-black text-white pb-24">
+
+  <!-- Top Bar -->
+  <div class="sticky top-0 z-50 bg-black border-b border-zinc-800">
+    <div class="flex justify-between items-center px-4 py-3 text-sm">
+      <a href="/profile" class="text-blue-500 flex items-center gap-1">
+        <i class="ri-arrow-left-s-line text-lg"></i> Profile
+      </a>
+
+      <h2 class="font-semibold">New Post</h2>
+
+      <a href="/feed" class="flex items-center gap-1">
+        <i class="ri-home-line text-lg"></i>
+      </a>
     </div>
-    <div class="flex flex-col items-center gap-2 mt-20">
-      <div class="image w-[25vw] h-[25vw] rounded-full border-2 border-zinc-800 flex items-center justify-center">
-        <i class="text-5xl font-light ri-image-line"></i>
-      </div>
-      <button id="selectpic" class="text-blue-500 capitalize">select picture</button>
-    </div>
-    <form id="uploadform" action="/upload" class="w-full px-6 py-3 mt-10" enctype="multipart/form-data" method="post">
-        <input hidden type="file" name="image">
-        <textarea class="px-2 py-1 w-full bg-zinc-900 border-2 h-20 border-zinc-800 resize-none rounded-md outline-none" placeholder="Write a caption..." name="caption"></textarea>
-        <input class="w-full px-2 py-2 bg-blue-500 rounded-md" type="submit" value="Post">
-    </form>
   </div>
 
-  <script>
-    document.querySelector("#selectpic")
-    .addEventListener("click", function(){
-        document.querySelector("#uploadform input").click();
+  <!-- Image Selector -->
+  <div class="flex flex-col items-center gap-3 mt-20">
+    <div class="w-28 h-28 rounded-full border-2 border-zinc-700 flex items-center justify-center">
+      <i class="ri-image-line text-5xl opacity-60"></i>
+    </div>
+    <button
+      id="selectpic"
+      class="text-blue-500 text-sm font-semibold"
+    >
+      Select Picture
+    </button>
+  </div>
+
+  <!-- Upload Form -->
+  <form
+    id="uploadform"
+    action="/upload"
+    method="post"
+    enctype="multipart/form-data"
+    class="w-full px-6 mt-10 space-y-4"
+  >
+    <input hidden type="file" name="image">
+
+    <textarea
+      name="caption"
+      placeholder="Write a caption..."
+      class="w-full h-24 bg-black border border-zinc-700 rounded-lg p-3 text-sm outline-none focus:border-zinc-500 resize-none"
+    ></textarea>
+
+    <input
+      type="submit"
+      value="Share"
+      class="w-full py-3 bg-blue-500 rounded-lg font-semibold text-sm hover:bg-blue-600 transition"
+    >
+  </form>
+
+</div>
+
+<script>
+  document.querySelector("#selectpic")
+    .addEventListener("click", function () {
+      document.querySelector("#uploadform input").click();
     });
-  </script>
+</script>
+
 <% include ./partials/footer.ejs %>

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
 function connectDB (){
-    mongoose.connect("mongodb://localhost:27017/instainsta").then(()=>{
+    mongoose.connect(`${process.env.MONGODB_URI}/Instagram`).then(()=>{
         console.log("Database Connected")
     })
 }

@@ -87,7 +87,7 @@ router.post("/update", isLoggedIn, upload.single("dp"), async (req, res) => {
     { new: true },
   );
   if (req.file) {
-    user.profileImg = req.file.filename;
+    user.profileImg = req.file.path;
     user.save();
   }
 
@@ -99,9 +99,10 @@ router.post("/upload", upload.single("image"), async (req, res) => {
   // console.log(req.file.filename)
   // console.log(req.body.caption)
   const user = await userModel.findOne({ username: req.session.passport.user });
+
   const newPost = await postModel.create({
     postCaption: req.body.caption,
-    postimage: req.file.filename,
+    postimage: req.file.path,
     user: user._id,
   });
   user.posts.push(newPost._id);
@@ -116,7 +117,7 @@ router.get("/profile", isLoggedIn, async function (req, res) {
     .findOne({ username: req.session.passport.user })
     .populate("posts");
   // const post = await postModel.find()
-  // console.log(post)
+  console.log(user)
   res.render("profile", { footer: true, user });
 });
 
@@ -125,34 +126,25 @@ router.get("/feed", isLoggedIn, async function (req, res) {
   const posts = await postModel.find().populate("user");
   // console.log(posts)
   const user = await userModel.findOne({ username: req.session.passport.user });
-  const alluser = await userModel.find()
-  res.render("feed", { footer: true, posts,user,alluser });
+  const alluser = await userModel.find();
+  res.render("feed", { footer: true, posts, user, alluser });
 });
 
 //like
 router.get("/like/:id", isLoggedIn, async (req, res) => {
-
   // console.log(req.params.id);
 
   const post = await postModel.findOne({ _id: req.params.id });
   const user = await userModel.findOne({ username: req.session.passport.user });
- 
 
-
-  if(post.likes.indexOf(user._id) === -1){
-
-   post.likes.push(user._id);
-
+  if (post.likes.indexOf(user._id) === -1) {
+    post.likes.push(user._id);
+  } else {
+    post.likes.splice(post.likes.indexOf(user._id), 1);
   }
-  else{
-    post.likes.splice(post.likes.indexOf(user._id),1)
-  }
-
 
   await post.save();
   res.redirect("/feed");
-
-
 });
 
 //Open Search Page
@@ -160,17 +152,36 @@ router.get("/search", isLoggedIn, function (req, res) {
   res.render("search", { footer: true });
 });
 
-router.get("/username/:username",async(req,res)=>{
-  const regex = new RegExp(`^${req.params.username}`,`i`)
+router.get("/username/:username", async (req, res) => {
+  const regex = new RegExp(`^${req.params.username}`, `i`);
 
-  const userfind = await userModel.find({username:regex})
-  res.json(userfind)
-
-
-})
+  const userfind = await userModel.find({ username: regex });
+  res.json(userfind);
+});
 
 router.get("/upload", isLoggedIn, function (req, res) {
   res.render("upload", { footer: true });
+});
+
+router.get("/delete/:id", isLoggedIn, async (req, res) => {
+  const user = await userModel.findOne({
+    username: req.session.passport.user,
+  });
+  console.log(user);
+
+  const postId = req.params.id;
+  // console.log(postId);
+
+  if (user.posts.includes(postId)) {
+    // remove from user's posts
+    user.posts.pull(postId);
+    await user.save();
+
+    // delete the actual post
+    await postModel.findByIdAndDelete(postId);
+  }
+
+  res.redirect("/feed");
 });
 
 module.exports = router;
