@@ -32,7 +32,7 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary,
   params: {
-    folder: "Pinterest",
+    folder: "Instagram",
     allowedFormats: ["jpg", "png", "jpeg"],
   },
 });

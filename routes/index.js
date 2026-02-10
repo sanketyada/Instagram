@@ -117,7 +117,7 @@ router.get("/profile", isLoggedIn, async function (req, res) {
     .findOne({ username: req.session.passport.user })
     .populate("posts");
   // const post = await postModel.find()
-  console.log(user)
+  // console.log(user)
   res.render("profile", { footer: true, user });
 });
 
